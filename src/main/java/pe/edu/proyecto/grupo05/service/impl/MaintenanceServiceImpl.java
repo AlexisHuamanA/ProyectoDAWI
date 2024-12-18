@@ -52,21 +52,20 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     }
 
     @Override
-    public ZapatillaDetailDto findDetailById(Integer id) {
+    public Optional<ZapatillaDetailDto> findDetailById(int id) {
 
         Optional<Zapatilla> optional = zapatillaRepository.findById(id);
         return optional.map(
-        zapatilla -> new ZapatillaDetailDto(
-                    zapatilla.getZapatillaId(),
-                    zapatilla.getModelo(),
-                    zapatilla.getMarca().getMarca(),
-                    zapatilla.getCategoria().getCategoria(),
-                    zapatilla.getDescripcion(),
-                    zapatilla.getPrecio(),
-                    zapatilla.getStock(),
-                    zapatilla.getUrlimg())
-        ).orElse(null);
-
+                zapatilla -> new ZapatillaDetailDto(
+                        zapatilla.getZapatillaId(),
+                        zapatilla.getModelo(),
+                        zapatilla.getMarca().getMarca(),
+                        zapatilla.getCategoria().getCategoria(),
+                        zapatilla.getDescripcion(),
+                        zapatilla.getPrecio(),
+                        zapatilla.getStock(),
+                        zapatilla.getUrlimg())
+        );
     }
 
     @Override
@@ -98,6 +97,35 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
                 }
         ).orElse(false);
+    }
+
+    public Boolean deleteZapatilla(int id) {
+
+        Optional<Zapatilla> optional = zapatillaRepository.findById(id);
+        return optional.map(user -> {
+            zapatillaRepository.delete(user);
+            return true;
+        }).orElse(false);
+
+    }
+
+    public Boolean addZapatilla(ZapatillaDetailDto zapatillaDetailDto) throws Exception {
+        Optional<Zapatilla> optional = zapatillaRepository.findById(zapatillaDetailDto.zapatillaId());
+        if (optional.isEmpty()) {
+            Zapatilla zapatilla = new Zapatilla();
+            zapatilla.setModelo(zapatillaDetailDto.modelo());
+            // zapatilla.setMarca(zapatillaDetailDto.marca());
+            // zapatilla.setCategoria(zapatillaDetailDto.categoria());
+            zapatilla.setDescripcion(zapatillaDetailDto.descripcion());
+            zapatilla.setDescripcion(zapatillaDetailDto.descripcion());
+            zapatilla.setPrecio(zapatillaDetailDto.precio());
+            zapatilla.setStock(zapatillaDetailDto.stock());
+            zapatilla.setUrlimg(zapatillaDetailDto.urlimg());
+            zapatillaRepository.save(zapatilla);
+            return true;
+        }
+
+        return null;
     }
 
 }
