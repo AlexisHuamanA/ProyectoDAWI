@@ -102,8 +102,8 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     public Boolean deleteZapatilla(int id) {
 
         Optional<Zapatilla> optional = zapatillaRepository.findById(id);
-        return optional.map(user -> {
-            zapatillaRepository.delete(user);
+        return optional.map(zapatilla -> {
+            zapatillaRepository.delete(zapatilla);
             return true;
         }).orElse(false);
 

@@ -56,7 +56,11 @@ public class MaintenanceController {
         return "redirect:/maintenance/start";
     }
 
-
+    @PostMapping("/delete/{id}")
+    public String deleteFilm(@PathVariable Integer id) throws Exception {
+        maintenanceService.deleteZapatilla(id);
+        return "redirect:/maintenance/start";
+    }
 
 }
 
