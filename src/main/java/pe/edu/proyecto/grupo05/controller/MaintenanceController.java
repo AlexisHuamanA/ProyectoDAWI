@@ -62,6 +62,20 @@ public class MaintenanceController {
         return "redirect:/maintenance/start";
     }
 
+    @GetMapping("/new")
+    public String newZapatilla(Model model) {
+        model.addAttribute("zapatillaNew", new ZapatillaDetailDto(null, "", "", null, null, null, null, null));
+        return "maintenance-new";
+    }
+
+    @PostMapping("/create")
+    public String createZapatilla(@ModelAttribute ZapatillaDetailDto zapatillaDetailDto) throws Exception {
+        maintenanceService.addZapatilla(zapatillaDetailDto);
+        return "redirect:/maintenance/start";
+    }
+
+
+
 }
 
 
